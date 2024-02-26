@@ -1,4 +1,5 @@
 import math
+import re
 
 class Triangle:
     def __init__(self, a, b, c):
@@ -235,3 +236,47 @@ if __name__ == '__main__':
 
     except ValueError as e:
         print(e)
+
+def create_figure_from_line(line):
+    parts = re.split(r'\s+', line.strip())
+    if len(parts) == 3:
+        return Triangle(*map(float, parts))
+    elif len(parts) == 4:
+        return Parallelogram(*map(float, parts))
+    elif len(parts) == 2:
+        return Rectangle(*map(float, parts))
+    elif len(parts) == 1:
+        return Circle(*map(float, parts))
+    elif len(parts) == 5:
+        return Trapeze(*map(float, parts))
+    else:
+        raise ValueError("Invalid data format")
+
+if __name__ == '__main__':
+    figures = []
+    with open('C:/Users/Volod/Downloads/input01.txt', 'C:/Users/Volod/Downloads/input02.txt', 'C:/Users/Volod/Downloads/input03.txt', 'r') as file:
+        current_figure = ''
+        for line in file:
+            line = line.strip()
+            if line:
+                current_figure += line + ' '
+            else:
+                try:
+                    figure = create_figure_from_line(current_figure.strip())
+                    figures.append(figure)
+                except ValueError as e:
+                    print(f"Error processing line '{current_figure.strip()}': {e}")
+                current_figure = ''
+
+    max_area_figure = max(figures, key=lambda f: f.area(), default=None)
+    max_perimeter_figure = max(figures, key=lambda f: f.perimeter(), default=None)
+
+    if max_area_figure:
+        print(f"Figure with maximum area: {max_area_figure.__class__.__name__}, Area: {max_area_figure.area()}")
+    else:
+        print("No figures found")
+
+    if max_perimeter_figure:
+        print(f"Figure with maximum perimeter: {max_perimeter_figure.__class__.__name__}, Perimeter: {max_perimeter_figure.perimeter()}")
+    else:
+        print("No figures found")
