@@ -254,19 +254,21 @@ def create_figure_from_line(line):
 
 if __name__ == '__main__':
     figures = []
-    with open('C:/Users/Volod/Downloads/input01.txt', 'C:/Users/Volod/Downloads/input02.txt', 'C:/Users/Volod/Downloads/input03.txt', 'r') as file:
-        current_figure = ''
-        for line in file:
-            line = line.strip()
-            if line:
-                current_figure += line + ' '
-            else:
-                try:
-                    figure = create_figure_from_line(current_figure.strip())
-                    figures.append(figure)
-                except ValueError as e:
-                    print(f"Error processing line '{current_figure.strip()}': {e}")
-                current_figure = ''
+    files = ['C:/Users/Volod/Downloads/input01.txt', 'C:/Users/Volod/Downloads/input02.txt', 'C:/Users/Volod/Downloads/input03.txt']
+    for filename in files:
+        with open(filename, 'r') as file:
+            current_figure = ''
+            for line in file:
+                line = line.strip()
+                if line:
+                    current_figure += line + ' '
+                else:
+                    try:
+                        figure = create_figure_from_line(current_figure.strip())
+                        figures.append(figure)
+                    except ValueError as e:
+                        print(f"Error processing line '{current_figure.strip()}': {e}")
+                    current_figure = ''
 
     max_area_figure = max(figures, key=lambda f: f.area(), default=None)
     max_perimeter_figure = max(figures, key=lambda f: f.perimeter(), default=None)
